@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT
+
+description: Temporarily force a pointer input processor into scroll mode
+
+compatible: "zmk,behavior-pointer-scroll"
+
+include: zero_param.yaml
+
+properties:
+  processor:
+    type: phandle
+    required: true

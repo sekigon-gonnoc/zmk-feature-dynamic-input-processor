@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT
+
+description: Temporarily force a pointer input processor into encoder mode
+
+compatible: "zmk,behavior-pointer-encoder"
+
+include: one_param.yaml
+
+properties:
+  processor:
+    type: phandle
+    required: true

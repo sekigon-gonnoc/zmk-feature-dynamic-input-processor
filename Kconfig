@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: MIT
+
+config ZMK_DYNAMIC_INPUT_PROCESSOR
+	bool "Runtime pointer input processor"
+	depends on ZMK_DYNAMIC_SETTINGS && ZMK_POINTING
+	default n
+	help
+	  Enable the all-in-one pointer processor for cursor,
+	  scroll, encoder, axis snapping, and automatic mouse layer behavior.
+
+config ZMK_DYNAMIC_INPUT_PROCESSOR_POINTER_ENCODER_COUNT
+	int "Number of pointer encoder targets"
+	depends on ZMK_DYNAMIC_INPUT_PROCESSOR
+	range 0 8
+	default 0
+	help
+	  Number of independently addressable encoder targets exposed by the
+	  pointer processor. Each target maps X and Y to two sensor indices.

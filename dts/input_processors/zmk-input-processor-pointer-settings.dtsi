@@ -1,0 +1,110 @@
+/* SPDX-License-Identifier: MIT */
+
+#ifndef ZMK_INPUT_PROCESSOR_POINTER_SETTINGS_DTSI
+#define ZMK_INPUT_PROCESSOR_POINTER_SETTINGS_DTSI
+
+#define DYNAMIC_POINTER_SETTING(arg_node, arg_name, arg_title, arg_help, arg_type, arg_property, arg_min, arg_max, arg_step, arg_widget, arg_subgroup, arg_ui_component, arg_runtime_field) \
+  arg_node {                                                                                     \
+    compatible = "sekigon,dynamic-setting";                                                                 \
+    setting-name = arg_name;                                                                     \
+    label = arg_title;                                                                            \
+    help = arg_help;                                                                              \
+    value-type = arg_type;                                                                        \
+    default-property = arg_property;                                                              \
+    minimum = <(arg_min)>;                                                                        \
+    maximum = <(arg_max)>;                                                                        \
+    step = <(arg_step)>;                                                                          \
+    widget = arg_widget;                                                                          \
+    ui-subgroup = arg_subgroup;                                                                   \
+    ui-component = arg_ui_component;                                                              \
+    runtime-field = arg_runtime_field;                                                             \
+    persistent;                                                                                  \
+  };
+
+#define DYNAMIC_POINTER_BOOL_SETTING(arg_node, arg_name, arg_title, arg_help, arg_property, arg_widget, arg_subgroup, arg_runtime_field) \
+  arg_node {                                                                                     \
+    compatible = "sekigon,dynamic-setting";                                                                 \
+    setting-name = arg_name;                                                                     \
+    label = arg_title;                                                                            \
+    help = arg_help;                                                                              \
+    value-type = "bool";                                                                         \
+    default-property = arg_property;                                                              \
+    widget = arg_widget;                                                                          \
+    ui-subgroup = arg_subgroup;                                                                   \
+    runtime-field = arg_runtime_field;                                                             \
+    persistent;                                                                                  \
+  };
+
+#define DYNAMIC_INPUT_PROCESSOR_POINTER_SETTINGS(arg_group_node, arg_instance, arg_role, arg_ui_label, arg_processor_node, arg_scope) \
+  arg_group_node: arg_group_node {                                                                \
+    compatible = "sekigon,dynamic-settings-group";                                                          \
+    module-name = "input-processor";                                                             \
+    group-name = "pointer";                                                                    \
+    instance-name = arg_instance;                                                                 \
+    label = arg_ui_label;                                                                         \
+    scope = arg_scope;                                                                          \
+    format-version = <1>;                                                                       \
+    target-role = arg_role;                                                                      \
+    actual-device = <&arg_processor_node>;                                                        \
+    runtime-struct-header = "zmk/dynamic_input_processor.h";                                 \
+    runtime-struct-type = "dynamic_pointer_data";                                                    \
+    runtime-apply-provider = "dynamic_pointer_setting_changed";                                      \
+    runtime-lock-field = "lock";                                                                  \
+    DYNAMIC_POINTER_SETTING(rotation, "rotation-deg", "Rotation", "Cursor rotation in degrees.", "s16", "rotation-deg", 0, 180, 1, "number", "ポインター", "", "params.rotation_deg") \
+    DYNAMIC_POINTER_SETTING(fine_layers, "fine-layers", "Fine layers", "Fine movement layer mask.", "u32", "fine-layers", 0, 4294967295, 1, "bitmask", "ポインター", "", "params.fine_layers") \
+    DYNAMIC_POINTER_SETTING(fine_coef, "fine-coef", "Fine divisor", "Cursor divisor while a Fine layer is highest.", "u8", "fine-coef", 1, 255, 1, "number", "ポインター", "", "params.fine_coef") \
+    DYNAMIC_POINTER_SETTING(rough_layers, "rough-layers", "Rough layers", "Rough movement layer mask.", "u32", "rough-layers", 0, 4294967295, 1, "bitmask", "ポインター", "", "params.rough_layers") \
+    DYNAMIC_POINTER_SETTING(rough_coef, "rough-coef", "Rough multiplier", "Cursor multiplier while a Rough layer is highest.", "u8", "rough-coef", 1, 255, 1, "number", "ポインター", "", "params.rough_coef") \
+    DYNAMIC_POINTER_SETTING(shift_point_0, "shift-point-0", "Shift point 1", "First curve boundary in input counts; zero disables the curve.", "u8", "shift-point-0", 0, 255, 1, "number", "ポインター", "curve-point-1", "params.shift_points[0]") \
+    DYNAMIC_POINTER_SETTING(shift_point_1, "shift-point-1", "Shift point 2", "Second boundary in input counts; must be greater than Point 1 when both are enabled.", "u8", "shift-point-1", 0, 255, 1, "number", "ポインター", "curve-point-2", "params.shift_points[1]") \
+    DYNAMIC_POINTER_SETTING(shift_point_2, "shift-point-2", "Shift point 3", "End of the linear transition to Rate 3; zero uses the graph range limit.", "u8", "shift-point-2", 0, 255, 1, "number", "ポインター", "curve-point-3", "params.shift_points[2]") \
+    DYNAMIC_POINTER_SETTING(shift_rate_0, "shift-rate-0", "Shift rate 1", "Cursor multiplier in percent; 100 is the baseline.", "u8", "shift-rate-0", 1, 255, 1, "number", "ポインター", "curve-rate-1", "params.shift_rates[0]") \
+    DYNAMIC_POINTER_SETTING(shift_rate_1, "shift-rate-1", "Shift rate 2", "Cursor multiplier in percent; 100 is the baseline.", "u8", "shift-rate-1", 1, 255, 1, "number", "ポインター", "curve-rate-2", "params.shift_rates[1]") \
+    DYNAMIC_POINTER_SETTING(shift_rate_2, "shift-rate-2", "Shift rate 3", "Cursor multiplier in percent; 100 is the baseline.", "u8", "shift-rate-2", 1, 255, 1, "number", "ポインター", "curve-rate-3", "params.shift_rates[2]") \
+    DYNAMIC_POINTER_SETTING(scroll_layers, "scroll-layers", "Scroll layers", "Highest layer mask enabling scroll mode.", "u32", "scroll-layers", 0, 4294967295, 1, "bitmask", "スクロール", "", "params.scroll_layers") \
+    DYNAMIC_POINTER_BOOL_SETTING(scroll_invert, "scroll-invert", "Invert scroll", "Invert both scroll axes.", "scroll-invert", "checkbox", "スクロール", "params.scroll_invert") \
+    DYNAMIC_POINTER_BOOL_SETTING(scroll_snap, "scroll-snap", "Scroll snap", "Enable history-based axis snapping.", "scroll-snap", "checkbox", "スクロール", "params.scroll_snap") \
+    DYNAMIC_POINTER_SETTING(scroll_divisor, "scroll-divisor", "Scroll divisor", "Additional scroll divisor.", "u8", "scroll-divisor", 1, 255, 1, "number", "スクロール", "", "params.scroll_divisor") \
+    DYNAMIC_POINTER_SETTING(encoder_layers, "encoder-layers", "Encoder layers", "Highest layer mask enabling encoder mode.", "u32", "encoder-layers", 0, 4294967295, 1, "bitmask", "エンコーダ", "", "params.encoder_layers") \
+    DYNAMIC_POINTER_SETTING(encoder_snap_layers, "encoder-snap-layers", "Encoder snap layers", "Highest layer mask enabling axis snapping in encoder mode.", "u32", "encoder-snap-layers", 0, 4294967295, 1, "bitmask", "エンコーダ", "", "params.encoder_snap_layers") \
+    DYNAMIC_POINTER_SETTING(encoder_divisor, "encoder-divisor", "Encoder divisor", "Motion counts per encoder tick.", "u8", "encoder-divisor", 1, 255, 1, "number", "エンコーダ", "", "params.encoder_divisor") \
+    DYNAMIC_POINTER_BOOL_SETTING(aml_enabled, "aml-enabled", "Automatic mouse layer", "Enable automatic mouse layer activation.", "aml-enabled", "checkbox", "AML", "params.aml_enabled") \
+    DYNAMIC_POINTER_SETTING(aml_layer, "aml-layer", "AML layer", "Layer ID activated by mouse movement.", "u8", "aml-layer", 0, 31, 1, "number", "AML", "", "params.aml_layer") \
+    DYNAMIC_POINTER_SETTING(aml_timeout, "aml-timeout-ms", "AML timeout", "Idle time before AML deactivation in milliseconds.", "u16", "aml-timeout-ms", 1, 65535, 1, "number", "AML", "", "params.aml_timeout_ms") \
+    DYNAMIC_POINTER_SETTING(aml_debounce, "aml-debounce-ms", "AML debounce", "Minimum restart delay after layer deactivation.", "u8", "aml-debounce-ms", 0, 255, 1, "number", "AML", "", "params.aml_debounce_ms") \
+    DYNAMIC_POINTER_SETTING(aml_threshold, "aml-threshold", "AML threshold", "Raw sensor counts required to activate AML.", "u8", "aml-threshold", 1, 255, 1, "number", "AML", "", "params.aml_threshold") \
+    DYNAMIC_POINTER_SETTING(aml_delay, "aml-delay-ms", "AML key delay", "Delay after a non-mouse key before AML can start.", "u16", "aml-delay-ms", 0, 65535, 1, "number", "AML", "", "params.aml_delay_ms") \
+  };
+
+#define DYNAMIC_INPUT_PROCESSOR_POINTER_INPUT_COUNT_SETTINGS(arg_group_node, arg_instance, arg_role, arg_processor_node) \
+  arg_group_node: arg_group_node {                                                              \
+    compatible = "sekigon,dynamic-settings-group";                                                        \
+    module-name = "input-processor";                                                           \
+    group-name = "pointer-input";                                                             \
+    instance-name = arg_instance;                                                               \
+    label = "Live pointer input";                                                             \
+    scope = "local";                                                                          \
+    format-version = <1>;                                                                      \
+    target-role = arg_role;                                                                    \
+    actual-device = <&arg_processor_node>;                                                      \
+    runtime-read-provider = "dynamic_pointer_setting_read";                                      \
+    input_count {                                                                              \
+      compatible = "sekigon,dynamic-setting";                                                            \
+      setting-name = "input-count";                                                           \
+      label = "Peak input count since last read";                                               \
+      help = "Maximum raw pointer input magnitude observed since the previous read.";           \
+      value-type = "u16";                                                                      \
+      default-int = <0>;                                                                       \
+      minimum = <0>;                                                                           \
+      maximum = <65535>;                                                                       \
+      step = <1>;                                                                              \
+      widget = "number";                                                                      \
+      ui-subgroup = "ポインター";                                                             \
+      ui-component = "curve-input-count";                                                      \
+      unit = "count";                                                                         \
+      read-only;                                                                               \
+      volatile;                                                                                \
+    };                                                                                         \
+  };
+
+#endif

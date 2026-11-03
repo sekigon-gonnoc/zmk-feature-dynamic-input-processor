@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: MIT
+
+description: All-in-one runtime pointer input processor
+
+compatible: "zmk,input-processor-pointer"
+
+include: ip_common.yaml
+
+properties:
+  "#input-processor-cells":
+    type: int
+    required: true
+    const: 0
+  type:
+    type: int
+    default: 2
+    description: Relative input event type (INPUT_EV_REL).
+  x-code:
+    type: int
+    default: 0
+    description: Relative X code (INPUT_REL_X).
+  y-code:
+    type: int
+    default: 1
+    description: Relative Y code (INPUT_REL_Y).
+  encoder-sensor-indices:
+    type: array
+    description: X/Y keymap sensor indices for each configured encoder target
+    default: []
+  rotation-deg:
+    type: int
+    default: 0
+  fine-layers:
+    type: int
+    default: 0
+  fine-coef:
+    type: int
+    default: 1
+  rough-layers:
+    type: int
+    default: 0
+  rough-coef:
+    type: int
+    default: 1
+  shift-point-0:
+    type: int
+    default: 1
+  shift-point-1:
+    type: int
+    default: 128
+  shift-point-2:
+    type: int
+    default: 255
+  shift-rate-0:
+    type: int
+    default: 100
+  shift-rate-1:
+    type: int
+    default: 100
+  shift-rate-2:
+    type: int
+    default: 100
+  scroll-layers:
+    type: int
+    default: 0
+  scroll-invert:
+    type: boolean
+  scroll-snap:
+    type: boolean
+  scroll-divisor:
+    type: int
+    default: 1
+  encoder-layers:
+    type: int
+    default: 0
+  encoder-snap-layers:
+    type: int
+    default: 0
+  encoder-divisor:
+    type: int
+    default: 50
+  aml-enabled:
+    type: boolean
+  aml-layer:
+    type: int
+    default: 1
+  aml-timeout-ms:
+    type: int
+    default: 400
+  aml-debounce-ms:
+    type: int
+    default: 25
+  aml-threshold:
+    type: int
+    default: 10
+  aml-delay-ms:
+    type: int
+    default: 200
+
+input-processor-cells: []

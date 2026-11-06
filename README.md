@@ -170,6 +170,6 @@ AMLはcursor scaling前のraw sensor countを使います。しきい値に達�
 
 ### Dynamic Settingsの設定
 
-設定はprocessor instanceごとに独立しています。各instanceについて`zmk-input-processor-pointer-settings.dtsi`をincludeし、`DYNAMIC_INPUT_PROCESSOR_POINTER_SETTINGS(...)`を1回呼び出します。最後の引数でsettings scope（`"owner"`または`"shared"`）を選びます。processorを実行する各firmwareで同じinstanceとshared scopeを使うと、一時設定と永続設定がnemu-linkのshared settingsを通じて同期されます。このmacroはprocessor nodeの既定値から、cursor、scroll、encoder、AMLの各runtime設定を宣言します。
+設定はprocessor instanceごとに独立しています。各instanceについて`zmk-input-processor-pointer-settings.dtsi`をincludeし、`DYNAMIC_INPUT_PROCESSOR_POINTER_SETTINGS(...)`を1回呼び出します。最後の引数でsettings scope（`"owner"`または`"shared"`）を選びます。processorを実行する各firmwareで同じinstanceとshared scopeを使うと、一時設定と永続設定がnemu-linkのshared settingsを通じて同期されます。このmacroはprocessor nodeの既定値から、cursor、scroll、encoder、AMLの各runtime設定に加え、ローカルで読み取るライブ入力カウント設定を自動的に宣言します。カウント設定はinstanceごとに別のDynamic Settings groupとして追加されます。
 
 buildではZMK pointingとDynamic Settingsを有効にしてください。

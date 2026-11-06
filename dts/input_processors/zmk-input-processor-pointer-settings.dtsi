@@ -74,7 +74,8 @@
     DYNAMIC_POINTER_SETTING(aml_debounce, "aml-debounce-ms", "AML debounce", "Minimum restart delay after layer deactivation.", "u8", "aml-debounce-ms", 0, 255, 1, "number", "AML", "", "params.aml_debounce_ms") \
     DYNAMIC_POINTER_SETTING(aml_threshold, "aml-threshold", "AML threshold", "Raw sensor counts required to activate AML.", "u8", "aml-threshold", 1, 255, 1, "number", "AML", "", "params.aml_threshold") \
     DYNAMIC_POINTER_SETTING(aml_delay, "aml-delay-ms", "AML key delay", "Delay after a non-mouse key before AML can start.", "u16", "aml-delay-ms", 0, 65535, 1, "number", "AML", "", "params.aml_delay_ms") \
-  };
+  }; \
+  DYNAMIC_INPUT_PROCESSOR_POINTER_INPUT_COUNT_SETTINGS(arg_group_node##_input_count, arg_instance, arg_role, arg_processor_node)
 
 #define DYNAMIC_INPUT_PROCESSOR_POINTER_INPUT_COUNT_SETTINGS(arg_group_node, arg_instance, arg_role, arg_processor_node) \
   arg_group_node: arg_group_node {                                                              \
